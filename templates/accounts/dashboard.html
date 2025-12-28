@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Дашборд{% endblock %}
+
+{% block content %}
+<h1>Дашборд</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Всего VIP-клиентов</h3>
+        <p class="stat-number">{{ total_clients }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Активных клиентов</h3>
+        <p class="stat-number">{{ active_clients }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Организаций</h3>
+        <p class="stat-number">{{ total_organizations }}</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Последние взаимодействия</h2>
+    {% if recent_interactions %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>VIP-клиент</th>
+                    <th>Тип</th>
+                    <th>Пользователь</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for interaction in recent_interactions %}
+                <tr>
+                    <td>{{ interaction.date }}</td>
+                    <td><a href="{% url 'vip_client_detail' interaction.vip_client.pk %}">{{ interaction.vip_client.full_name }}</a></td>
+                    <td>{{ interaction.get_type_display }}</td>
+                    <td>{{ interaction.user.full_name|default:interaction.user.username }}</td>
+                    <td>{{ interaction.description|truncatewords:10 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Нет взаимодействий</p>
+    {% endif %}
+</div>
+
+<div class="actions">
+    <a href="{% url 'vip_client_add' %}" class="btn btn-primary">Добавить VIP-клиента</a>
+    <a href="{% url 'vip_clients_list' %}" class="btn btn-secondary">Все клиенты</a>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить {{ client.full_name }}{% endblock %}
+
+{% block content %}
+<h1>Удалить VIP-клиента</h1>
+
+<div class="warning-box">
+    <p>Вы уверены, что хотите удалить VIP-клиента <strong>{{ client.full_name }}</strong>?</p>
+    <p>Это действие нельзя отменить.</p>
+</div>
+
+<form method="post" class="form">
+    {% csrf_token %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-danger">Да, удалить</button>
+        <a href="{% url 'vip_client_detail' client.pk %}" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>
+{% endblock %}
+
+

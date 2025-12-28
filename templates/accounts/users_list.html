@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Пользователи{% endblock %}
+
+{% block content %}
+<h1>Пользователи</h1>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Имя пользователя</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role.role_name|default:"—" }}</td>
+            <td>
+                {% if user.is_active %}
+                    <span class="badge badge-success">Активен</span>
+                {% else %}
+                    <span class="badge badge-danger">Неактивен</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Нет пользователей</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+

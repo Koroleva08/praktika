@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ client.full_name }}{% endblock %}
+
+{% block content %}
+<h1>{{ client.full_name }}</h1>
+
+<div class="detail-section">
+    <div class="detail-info">
+        <h2>Информация о клиенте</h2>
+        <table class="info-table">
+            <tr>
+                <th>ФИО:</th>
+                <td>{{ client.full_name }}</td>
+            </tr>
+            <tr>
+                <th>Должность:</th>
+                <td>{{ client.position }}</td>
+            </tr>
+            <tr>
+                <th>Телефон:</th>
+                <td>{{ client.phone }}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{ client.email }}</td>
+            </tr>
+            <tr>
+                <th>Организация:</th>
+                <td>{{ client.organization.name|default:"—" }}</td>
+            </tr>
+            <tr>
+                <th>Статус:</th>
+                <td><span class="badge badge-{{ client.status }}">{{ client.get_status_display }}</span></td>
+            </tr>
+            {% if client.notes %}
+            <tr>
+                <th>Примечания:</th>
+                <td>{{ client.notes }}</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'vip_client_edit' client.pk %}" class="btn btn-warning">Редактировать</a>
+        <a href="{% url 'vip_client_delete' client.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'interaction_add' client.pk %}" class="btn btn-primary">Добавить взаимодействие</a>
+        <a href="{% url 'vip_clients_list' %}" class="btn btn-secondary">Назад к списку</a>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Взаимодействия</h2>
+    {% if interactions %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Тип</th>
+                    <th>Канал</th>
+                    <th>Пользователь</th>
+                    <th>Описание</th>
+                    <th>Результат</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for interaction in interactions %}
+                <tr>
+                    <td>{{ interaction.date }}</td>
+                    <td>{{ interaction.get_type_display }}</td>
+                    <td>{{ interaction.get_channel_display|default:"—" }}</td>
+                    <td>{{ interaction.user.full_name|default:interaction.user.username }}</td>
+                    <td>{{ interaction.description }}</td>
+                    <td>{{ interaction.result|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Нет взаимодействий с этим клиентом</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+

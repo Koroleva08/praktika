@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить VIP-клиента{% endblock %}
+
+{% block content %}
+<h1>Добавить VIP-клиента</h1>
+
+<form method="post" class="form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="full_name">ФИО *</label>
+        <input type="text" id="full_name" name="full_name" required>
+    </div>
+    <div class="form-group">
+        <label for="position">Должность *</label>
+        <input type="text" id="position" name="position" required>
+    </div>
+    <div class="form-group">
+        <label for="phone">Телефон *</label>
+        <input type="text" id="phone" name="phone" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label for="organization">Организация</label>
+        <select id="organization" name="organization">
+            <option value="">Выберите организацию</option>
+            {% for org in organizations %}
+                <option value="{{ org.pk }}">{{ org.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="status">Статус *</label>
+        <select id="status" name="status" required>
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if value == 'active' %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="notes">Примечания</label>
+        <textarea id="notes" name="notes" rows="4"></textarea>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{% url 'vip_clients_list' %}" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>
+{% endblock %}
+
+
